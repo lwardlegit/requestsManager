@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+<link rel="stylesheet" href="./css/styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Secular+One&display=swap" rel="stylesheet">
+<script src="https://wzrd.in/standalone/formdata-polyfill"></script>
+<script src="https://wzrd.in/standalone/promise-polyfill@latest"></script>
+<script src="https://wzrd.in/standalone/whatwg-fetch@latest"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+<title>requests manager</title>
+</head>
+<body>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Reach out to me</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h3>Submit Request</h3>
+        <p>need a hand or wanna talk? send me a request and i'll see what I can do</p>
+
+        <form name="submit-to-google-sheet">
+
+          <input name="email" type="email" placeholder="email">
+            <input name="new" type="text" placeholder="your inquiry" required>
+
+            <button type="submit">Send</button>
+          </form>
+      </div>
+      <div class="modal-footer">
+       
+      </div>
+    </div>
+  </div>
+</div>
+        
+ 
+
+    <div id="requestsContainer">
+      
+      <button type="button" id="modalbtn" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">Make a request</button>
+  
+      <div id="requestsList">
+        <div id="new">
+          <div class="subheading">New Requests</div>
+          <ul id="newRequests">
+            
+         
+          </ul>
+        </div> <!--grabs from 'new' col in sheets-->
+        <div id="in-progress">
+          <div class="subheading">In Progress</div>
+          <ul id="progressRequests">
+          
+            
+          </ul>
+        </div> <!--grabs from 'in-progress' col in sheets-->
+        <div id="finished">
+          <div class="subheading">Finished</div>
+          <ul id="finishedRequests">
+           
+          
+          </ul>
+        </div> <!--grabs from 'finished' col in sheets-->
+      </div>
+  </div>
+
+
+<script src="./js/script.js"></script>
+
+<script>
+
+    var newreq = document.getElementById("newRequests")
+    var progress = document.getElementById("progressRequests")
+    var finished = document.getElementById("finishedRequests")
+
+    //grab data from sheets and pull it into webpages here
+    fetch('https://api.apispreadsheets.com/data/1785/')
+    .then(function(response) {
+    // The response is a Response instance.
+    // You parse the data into a useable format using `.json()`
+    return response.json();
+  }).then(function(data) {
+    // `data` is the parsed version of the JSON returned from the above endpoint.
+    
+    let requests = data.data
+    console.log(requests)
+      for(let i in requests){
+        let li = document.createElement("li")
+        let key = Object.keys(requests[i])
+        
+        console.log(requests[i])
+        //console.log(key)
+      
+        
+
+        if(requests[i].New !== ""){
+          li.innerHTML = requests[i].New+" "+requests[i].Email
+          newreq.appendChild(li)
+          console.log("appending to new",li.innerHTML)
+        }
+        if(requests[i].Progress !== ""){
+          li.innerHTML = requests[i].Progress+" "+requests[i].Email
+          progress.appendChild(li)
+          console.log("appending to progress",li.innerHTML)
+        }
+        if(requests[i].Finished !== ""){
+          li.innerHTML = requests[i].Finished+" "+requests[i].Email
+          finished.appendChild(li)
+          console.log("appending to finished",li.innerHTML)
+        }
+        
+
+      }
+  });
+
+
+    const scriptURL = 'https://api.apispreadsheets.com/data/1785/'
+    const form = document.forms['submit-to-google-sheet']
+  
+  
+    form.addEventListener('submit', e => {
+      e.preventDefault()
+      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => console.log('Success!', response))
+        .then(() => $('#exampleModal').modal('hide'))
+        .catch(error => console.error('Error!', error.message))
+    })
+  </script>
+
+</body>
+</html>

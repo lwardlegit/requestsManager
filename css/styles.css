@@ -1,0 +1,80 @@
+body{
+    background-color: rgb(110, 204, 110);
+    margin: 0 auto;
+    padding: 5em;
+    width: 100%;
+    display: block;
+    justify-content: center;
+}
+
+#modalbtn{
+    margin: 0 auto;
+    justify-content: center;
+}
+
+h1,h2,h3{
+    color: white
+}
+#requestsContainer {
+    margin: 0 auto;
+    display: block;
+    background-color: rgb(110, 204, 110);
+    width: 100%;
+    
+}
+#requestsContainer button{
+    display: block;
+    margin: 0 auto;
+    width: 30%;
+    margin-bottom: 2em;
+}
+
+#requestsList {
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-evenly;
+    width: 70%;
+    background-color: rgb(110, 204, 110);
+    font-family: 'Bebas Neue', cursive;
+    font-size: 2em;
+    
+}
+.subheading{
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+li{
+    margin: 0 auto;
+    margin-top: .5em;
+    width: 100%;
+    padding: .8em;
+    list-style-type: none;
+    box-shadow: 3px 5px rgb(145, 243, 166);
+    background-color: whitesmoke;
+    border-radius: 5px;
+    font-family: 'Roboto';
+}
+li:hover{
+    background-color: rgb(160, 226, 252);
+}
+
+  
+  /* On screens that are 992px or less, set the background color to blue */
+  @media screen and (max-width: 992px) {
+   
+  }
+  
+  /* On screens that are 600px or less, set the background color to olive */
+  @media screen and (max-width: 600px) {
+    #requestsList{
+        display: block;
+        font-size: 1em;
+    }
+
+    #requestsContainer button{
+        width: 80%;
+        padding-bottom: 1em;
+        padding-top: .8em;
+    }
+  }
